@@ -5,11 +5,11 @@ const experiences = [
     company: "KI-Quadrat Systemhaus GmbH (KI²)",
     location: "Vienna, Austria · Remote",
     summary:
-      "Leading end-to-end delivery of sovereign AI products for European municipalities, with compliance and operational trust built into every release.",
+      "Lead complex AI and GovTech delivery from roadmap to release, aligning distributed teams and municipal stakeholders around clear outcomes.",
     highlights: [
-      "Own a 136-feature roadmap from sprint-ready specification through production deployment.",
-      "Sequence dependencies across five AI products, including citizen services, legal, funding, and permit workflows.",
-      "Coordinate distributed engineering, QA, municipal stakeholders, and secure on-premise pilot deployments.",
+      "Manage a 136-feature roadmap across five AI products, converting business priorities into sprint-ready plans.",
+      "Coordinate engineering, QA, leadership, and municipal stakeholders across Austria, Romania, and Germany.",
+      "Manage risks, dependencies, acceptance criteria, release readiness, and compliance-sensitive deployments.",
     ],
   },
   {
@@ -18,10 +18,10 @@ const experiences = [
     company: "AI App Company",
     location: "Berlin, Germany",
     summary:
-      "Delivered AI product initiatives through structured planning, clear objectives, and measurable milestones.",
+      "Managed AI product initiatives through structured planning, clear scope, and measurable milestones.",
     highlights: [
-      "Built and managed accountable cross-functional teams around shared delivery outcomes.",
-      "Maintained velocity through early risk identification, proactive unblocking, and clear stakeholder communication.",
+      "Built accountable cross-functional teams around shared delivery goals.",
+      "Maintained momentum through proactive risk management, unblocking, and stakeholder communication.",
     ],
   },
   {
@@ -30,10 +30,10 @@ const experiences = [
     company: "My Digital Consultant",
     location: "Dhaka, Bangladesh",
     summary:
-      "Designed goal-driven digital strategies for SME clients across multiple verticals.",
+      "Connected strategy, audience insight, and execution for SME clients across multiple industries.",
     highlights: [
-      "Improved SEO performance and organic visibility across client portfolios.",
-      "Managed social content, email campaigns, and performance reporting.",
+      "Improved organic visibility through SEO and goal-driven content strategy.",
+      "Managed campaign calendars, email delivery, performance reporting, and client communication.",
     ],
   },
 ];
@@ -43,49 +43,90 @@ const earlierExperience = [
     period: "Sep 2020 — Aug 2021",
     role: "English Teacher",
     company: "Uncle Sam’s American English School · Shenzhen, China",
+    value: "Built facilitation, adaptability, and audience-aware communication.",
   },
   {
     period: "Jan 2018 — Mar 2020",
     role: "International Students Recruiter",
     company: "Elvon International · Nanchang, China",
+    value: "Managed relationships and end-to-end student application pipelines.",
+  },
+];
+
+const selectedWork = [
+  {
+    number: "01",
+    label: "Product delivery",
+    title: "A five-product AI roadmap",
+    proof: "136 features · 05 products",
+    challenge:
+      "Align multiple AI products, dependencies, and stakeholders within one delivery system.",
+    contribution:
+      "Turn business priorities into specifications, sprint plans, clear ownership, and coordinated releases.",
+    outcome:
+      "Created greater visibility across dependencies and a more predictable path from decision to delivery.",
+  },
+  {
+    number: "02",
+    label: "GovTech operations",
+    title: "Municipal AI pilot delivery",
+    proof: "Austria · Romania · Germany",
+    challenge:
+      "Deliver public-service AI in environments shaped by trust, security, and infrastructure constraints.",
+    contribution:
+      "Coordinate on-premise readiness, acceptance criteria, delivery risk, and compliance-aware stakeholders.",
+    outcome:
+      "Helped move pilots forward with stronger operational clarity and stakeholder confidence.",
+  },
+  {
+    number: "03",
+    label: "Business & growth",
+    title: "Digital growth for SMEs",
+    proof: "SEO · Content · Reporting",
+    challenge:
+      "Bring focus and measurement to fragmented digital channels across different client industries.",
+    contribution:
+      "Structure audience-led strategies, campaign calendars, content delivery, and performance reporting.",
+    outcome:
+      "Improved organic visibility and gave clients clearer information for marketing decisions.",
   },
 ];
 
 const capabilities = [
   {
-    label: "Delivery",
+    label: "Project Delivery",
     items: [
+      "Roadmap development",
       "Agile & sprint planning",
-      "Backlog prioritisation",
-      "Release management",
-      "Risk surfacing",
+      "Risk & dependency management",
+      "Release coordination",
     ],
   },
   {
-    label: "Leadership",
+    label: "Product & Technology",
     items: [
-      "Cross-timezone teams",
+      "AI & SaaS delivery",
+      "Requirements definition",
+      "QA & acceptance criteria",
+      "Compliance awareness",
+    ],
+  },
+  {
+    label: "Business & Growth",
+    items: [
+      "Digital strategy",
+      "SEO & content",
+      "Audience understanding",
+      "Performance reporting",
+    ],
+  },
+  {
+    label: "People & Communication",
+    items: [
+      "Cross-functional leadership",
       "Stakeholder reporting",
-      "Vendor management",
-      "Dependency sequencing",
-    ],
-  },
-  {
-    label: "Governance",
-    items: [
-      "ISO 27001",
-      "ISO 42001",
-      "GDPR-ready architecture",
-      "Compliance documentation",
-    ],
-  },
-  {
-    label: "AI & Technology",
-    items: [
-      "RAG pipelines",
-      "Multi-tenant SaaS",
-      "LLM integration",
-      "EU data residency",
+      "Facilitation & teaching",
+      "Cross-cultural collaboration",
     ],
   },
 ];
@@ -114,6 +155,7 @@ export default function Home() {
         <nav aria-label="Primary navigation">
           <a href="#profile">Profile</a>
           <a href="#experience">Experience</a>
+          <a href="#work">Work</a>
           <a href="#capabilities">Capabilities</a>
           <a href="#contact">Contact</a>
         </nav>
@@ -127,7 +169,7 @@ export default function Home() {
           PORTFOLIO / 2026
         </div>
         <div className="hero-title-wrap">
-          <p className="eyebrow">Senior Tech Project Manager</p>
+          <p className="eyebrow">Project Manager & Cross-Functional Operator</p>
           <h1 id="hero-title">
             Omar
             <br />
@@ -135,20 +177,17 @@ export default function Home() {
           </h1>
         </div>
         <div className="hero-intro">
-          <p className="hero-kicker">AI · GovTech · Cross-functional execution</p>
+          <p className="hero-kicker">Projects · Products · People · Growth</p>
           <p>
-            I translate complex technical roadmaps into structured, predictable
-            execution — aligning product, engineering, and leadership around
-            outcomes that scale.
+            I turn complex ideas into clear, executable projects — connecting
+            strategy, people, and delivery across technology, operations, and
+            growth.
           </p>
           <div className="hero-actions">
-            <a className="primary-action" href="#experience">
-              Explore my experience <span aria-hidden="true">↓</span>
+            <a className="primary-action" href="#work">
+              See how I work <span aria-hidden="true">↓</span>
             </a>
-            <a
-              className="text-action"
-              href="mailto:omarfaruque32@gmail.com"
-            >
+            <a className="text-action" href="mailto:omarfaruque32@gmail.com">
               Email me <span aria-hidden="true">↗</span>
             </a>
           </div>
@@ -158,43 +197,44 @@ export default function Home() {
       <section className="proof-strip" aria-label="Career highlights">
         <div>
           <strong>136</strong>
-          <span>feature roadmap owned end to end</span>
+          <span>feature roadmap managed end to end</span>
         </div>
         <div>
           <strong>05</strong>
-          <span>AI products sequenced in one platform</span>
+          <span>AI products coordinated in one platform</span>
         </div>
         <div>
           <strong>03</strong>
-          <span>European markets served</span>
+          <span>European markets supported</span>
         </div>
         <div className="proof-note">
           <span className="status-dot" aria-hidden="true" />
-          Based in Bangladesh · Working across time zones
+          <span>Based in Bangladesh · Working across time zones</span>
         </div>
       </section>
 
       <section className="section-grid profile-section" id="profile">
         <div className="section-marker">
-          <span>01 / 05</span>
+          <span>01 / 06</span>
           <p>Profile</p>
         </div>
         <div className="section-content profile-copy">
           <p className="display-copy">
-            Building execution systems for ambitious, compliance-critical
-            technology.
+            Project management is my core discipline. Breadth is the advantage
+            I bring.
           </p>
           <div className="profile-columns">
             <p>
-              I specialise in AI, SaaS, and GovTech delivery across distributed
-              teams. My work turns high-complexity initiatives into visible,
-              dependable progress through clear ownership, tight sequencing,
-              and practical release discipline.
+              I’m a project manager and cross-functional generalist with
+              experience across AI products, GovTech, digital strategy,
+              recruitment, and international education. I bring structure to
+              ambiguity, turn priorities into plans, and keep teams moving
+              toward shared outcomes.
             </p>
             <p>
-              From EU data residency and ISO-aligned architecture to municipal
-              pilots and cross-timezone sprint planning, I create the conditions
-              for teams and stakeholders to trust every milestone.
+              My range helps me see the whole system: customer needs,
+              commercial context, technical constraints, stakeholder
+              expectations, and the communication required to connect them.
             </p>
           </div>
         </div>
@@ -202,12 +242,12 @@ export default function Home() {
 
       <section className="section-grid experience-section" id="experience">
         <div className="section-marker">
-          <span>02 / 05</span>
+          <span>02 / 06</span>
           <p>Experience</p>
         </div>
         <div className="section-content">
           <div className="section-heading-row">
-            <h2>Selected experience</h2>
+            <h2>Experience with a clear through-line</h2>
             <a href="/Omar_Faruque_CV.pdf" target="_blank" rel="noreferrer">
               View full CV <span aria-hidden="true">↗</span>
             </a>
@@ -238,12 +278,15 @@ export default function Home() {
           </div>
 
           <div className="earlier-work">
-            <p className="eyebrow">Earlier experience</p>
+            <p className="eyebrow">Earlier experience, lasting value</p>
             {earlierExperience.map((experience) => (
               <div className="earlier-row" key={experience.role}>
                 <time>{experience.period}</time>
-                <strong>{experience.role}</strong>
-                <span>{experience.company}</span>
+                <div>
+                  <strong>{experience.role}</strong>
+                  <span>{experience.company}</span>
+                </div>
+                <p>{experience.value}</p>
               </div>
             ))}
           </div>
@@ -252,29 +295,68 @@ export default function Home() {
 
       <section className="impact-band" aria-labelledby="impact-title">
         <div>
-          <p className="eyebrow">Current focus</p>
-          <h2 id="impact-title">Sovereign AI for public services.</h2>
+          <p className="eyebrow">The thread through my work</p>
+          <h2 id="impact-title">Clarity, coordination, momentum.</h2>
         </div>
         <p>
-          Delivering trustworthy municipal assistants across Austria, Romania,
-          and Germany — connecting complex institutional knowledge to accurate,
-          citizen-facing answers while keeping data residency and compliance at
-          the centre of the platform.
+          Across AI delivery, marketing, recruitment, and teaching, the work has
+          always been the same at its core: understand people, organise
+          complexity, communicate clearly, and move outcomes forward.
         </p>
-        <div className="impact-tags" aria-label="Governance focus">
-          <span>ISO 27001</span>
-          <span>ISO 42001</span>
-          <span>GDPR</span>
+        <div className="impact-tags" aria-label="Operating strengths">
+          <span>Strategy</span>
+          <span>Delivery</span>
+          <span>Communication</span>
+          <span>Adaptability</span>
+        </div>
+      </section>
+
+      <section className="section-grid work-section" id="work">
+        <div className="section-marker">
+          <span>03 / 06</span>
+          <p>Selected work</p>
+        </div>
+        <div className="section-content">
+          <div className="section-heading-row work-heading">
+            <h2>Problems I help teams move through</h2>
+            <p>Three snapshots of how I connect strategy to execution.</p>
+          </div>
+          <div className="work-list">
+            {selectedWork.map((project) => (
+              <article className="work-card" key={project.title}>
+                <div className="work-card-topline">
+                  <span>{project.number}</span>
+                  <p>{project.label}</p>
+                </div>
+                <h3>{project.title}</h3>
+                <strong>{project.proof}</strong>
+                <dl>
+                  <div>
+                    <dt>Challenge</dt>
+                    <dd>{project.challenge}</dd>
+                  </div>
+                  <div>
+                    <dt>My contribution</dt>
+                    <dd>{project.contribution}</dd>
+                  </div>
+                  <div>
+                    <dt>Outcome</dt>
+                    <dd>{project.outcome}</dd>
+                  </div>
+                </dl>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
       <section className="section-grid capabilities-section" id="capabilities">
         <div className="section-marker">
-          <span>03 / 05</span>
+          <span>04 / 06</span>
           <p>Capabilities</p>
         </div>
         <div className="section-content">
-          <h2>How I move work forward</h2>
+          <h2>A generalist toolkit, organised around delivery</h2>
           <div className="capability-grid">
             {capabilities.map((capability, index) => (
               <article className="capability" key={capability.label}>
@@ -301,7 +383,7 @@ export default function Home() {
 
       <section className="section-grid credentials-section" id="credentials">
         <div className="section-marker">
-          <span>04 / 05</span>
+          <span>05 / 06</span>
           <p>Credentials</p>
         </div>
         <div className="section-content credentials-layout">
@@ -341,12 +423,12 @@ export default function Home() {
       </section>
 
       <section className="contact-section" id="contact">
-        <div className="contact-index">05 / 05</div>
-        <p className="eyebrow">Let’s build with clarity</p>
+        <div className="contact-index">06 / 06</div>
+        <p className="eyebrow">Let’s create forward motion</p>
         <h2>
-          Have a complex roadmap?
+          Have an idea, team, or roadmap?
           <br />
-          <em>Let’s make it executable.</em>
+          <em>Let’s move it forward.</em>
         </h2>
         <div className="contact-actions">
           <a href="mailto:omarfaruque32@gmail.com">
@@ -367,7 +449,7 @@ export default function Home() {
 
       <footer>
         <span>© 2026 Omar Faruque</span>
-        <span>Senior Tech Project Manager · AI & GovTech Delivery</span>
+        <span>Project Manager & Cross-Functional Operator</span>
         <a href="#top">Back to top ↑</a>
       </footer>
     </main>

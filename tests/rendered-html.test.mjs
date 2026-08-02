@@ -1,11 +1,6 @@
 import assert from "node:assert/strict";
-import { access, readFile, readdir } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
-
-const developmentPreviewMeta =
-  /<meta(?=[^>]*\bname=["']codex-preview["'])(?=[^>]*\bcontent=["']development["'])[^>]*>/i;
-const templateRoot = new URL("../", import.meta.url);
-const previewRoot = new URL("../app/_sites-preview/", import.meta.url);
 
 async function render() {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
@@ -28,64 +23,60 @@ async function render() {
   );
 }
 
-test("server-renders the starter loading skeleton", async () => {
+test("server-renders Omar's project-management-led generalist portfolio", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, developmentPreviewMeta);
-  assert.match(html, /<title>Your site is taking shape<\/title>/i);
-  assert.match(html, /Building your site/);
-  assert.match(html, /Your site is taking shape/);
   assert.match(
     html,
-    /Your first version will appear here automatically when it’s ready\./,
+    /<title>Omar Faruque — Project Manager &amp; Cross-Functional Operator<\/title>/i,
   );
-  assert.doesNotMatch(html, /Codex/);
-  assert.match(html, /react-loading-skeleton/);
-  assert.match(html, /role="status"/);
+  assert.match(
+    html,
+    /I turn complex ideas into clear, executable projects/i,
+  );
+  assert.match(
+    html,
+    /Project management is my core discipline\. Breadth is the advantage I bring\./i,
+  );
+  assert.match(html, /A five-product AI roadmap/i);
+  assert.match(html, /Municipal AI pilot delivery/i);
+  assert.match(html, /Digital growth for SMEs/i);
+  assert.doesNotMatch(html, /Your site is taking shape|Building your site|codex-preview/i);
 });
 
-test("keeps the loading skeleton scoped and disposable", async () => {
-  const [preview, css, page, layout, packageJson, files] = await Promise.all([
-    readFile(new URL("SkeletonPreview.tsx", previewRoot), "utf8"),
-    readFile(new URL("preview.css", previewRoot), "utf8"),
-    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../package.json", import.meta.url), "utf8"),
-    readdir(previewRoot),
+test("renders the complete navigation and contact paths", async () => {
+  const response = await render();
+  const html = await response.text();
+
+  for (const target of [
+    "#profile",
+    "#experience",
+    "#work",
+    "#capabilities",
+    "#contact",
+  ]) {
+    assert.match(html, new RegExp(`href="${target}"`));
+  }
+
+  assert.match(html, /href="mailto:omarfaruque32@gmail\.com"/i);
+  assert.match(html, /href="https:\/\/www\.linkedin\.com\/in\/omarfaruquerajim"/i);
+  assert.match(html, /href="\/Omar_Faruque_CV\.pdf"/i);
+  assert.match(html, />136<\/strong>/);
+  assert.match(html, />05<\/strong>/);
+  assert.match(html, />03<\/strong>/);
+});
+
+test("ships the CV, social card, and favicon assets", async () => {
+  const [pdf, socialCard, favicon] = await Promise.all([
+    readFile(new URL("../public/Omar_Faruque_CV.pdf", import.meta.url)),
+    readFile(new URL("../public/og.png", import.meta.url)),
+    readFile(new URL("../public/favicon.svg", import.meta.url), "utf8"),
   ]);
 
-  assert.deepEqual(files.sort(), ["SkeletonPreview.tsx", "preview.css"]);
-  assert.match(preview, /from "react-loading-skeleton"/);
-  assert.match(preview, /baseColor="#eceae7"/);
-  assert.match(preview, /highlightColor="#f9f8f6"/);
-  assert.match(preview, /duration=\{2\.8\}/);
-  assert.match(preview, /sites-skeleton-search-placeholder/);
-  assert.match(packageJson, /"react-loading-skeleton": "3\.5\.0"/);
-
-  const shellIndex = preview.indexOf('className="sites-skeleton-shell"');
-  const statusIndex = preview.indexOf('className="sites-skeleton-status"');
-  assert.ok(shellIndex >= 0 && statusIndex > shellIndex);
-  assert.match(css, /position:\s*fixed/);
-  assert.match(css, /inset:\s*0/);
-  assert.match(css, /opacity:\s*0\.52/);
-  assert.match(css, /prefers-reduced-motion:\s*reduce/);
-  assert.doesNotMatch(css, /#020617|canvas|pets|progress/i);
-  assert.doesNotMatch(
-    preview,
-    /loading-spinner|status-mark|status-progress|canvas|cookie|random/i,
-  );
-
-  assert.match(page, /export const metadata:\s*Metadata/);
-  assert.match(page, /"codex-preview": "development"/);
-  assert.match(page, /<SkeletonPreview \/>/);
-  assert.match(layout, /title:\s*"Starter Project"/);
-  assert.doesNotMatch(layout, /codex-preview|_sites-preview|themeColor|\bViewport\b/);
-  assert.doesNotMatch(css, /(^|\s)(html|body)\s*\{/m);
-
-  await assert.rejects(
-    access(new URL("public/_sites-preview", templateRoot)),
-  );
+  assert.equal(pdf.subarray(0, 4).toString(), "%PDF");
+  assert.equal(socialCard.subarray(1, 4).toString(), "PNG");
+  assert.match(favicon, /<svg\b/i);
 });

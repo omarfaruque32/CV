@@ -15,16 +15,19 @@ export async function generateMetadata(): Promise<Metadata> {
   const socialImage = new URL("/og.png", baseUrl).toString();
 
   return {
-    title: "Omar Faruque — Senior Tech Project Manager",
+    title: "Omar Faruque — Project Manager & Cross-Functional Operator",
     description:
-      "Senior Project Manager specialising in AI, SaaS, GovTech delivery, cross-functional execution, and compliance-critical platforms.",
+      "Project manager and cross-functional generalist connecting strategy, people, and delivery across technology, operations, and growth.",
     authors: [{ name: "Omar Faruque" }],
     keywords: [
-      "Senior Project Manager",
+      "Project Manager",
+      "Cross-Functional Operator",
+      "Generalist",
       "AI Delivery",
       "GovTech",
       "SaaS",
-      "Technical Project Manager",
+      "Digital Strategy",
+      "Cross-Functional Leadership",
     ],
     alternates: { canonical: baseUrl },
     icons: {
@@ -32,23 +35,25 @@ export async function generateMetadata(): Promise<Metadata> {
       shortcut: "/favicon.svg",
     },
     openGraph: {
-      title: "Omar Faruque — Senior Tech Project Manager",
-      description: "AI, GovTech, and cross-functional delivery.",
+      title: "Omar Faruque — Project Manager & Cross-Functional Operator",
+      description:
+        "Turning complex ideas into clear, executable projects across technology, operations, and growth.",
       type: "profile",
       url: baseUrl,
       images: [
         {
           url: socialImage,
-          width: 1734,
-          height: 907,
-          alt: "Omar Faruque — Senior Tech Project Manager",
+          width: 1730,
+          height: 909,
+          alt: "Omar Faruque — Project Manager and Cross-Functional Operator",
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: "Omar Faruque — Senior Tech Project Manager",
-      description: "AI, GovTech, and cross-functional delivery.",
+      title: "Omar Faruque — Project Manager & Cross-Functional Operator",
+      description:
+        "Turning complex ideas into clear, executable projects across technology, operations, and growth.",
       images: [socialImage],
     },
   };
