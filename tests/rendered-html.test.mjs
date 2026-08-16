@@ -2,13 +2,13 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-async function render() {
+async function render(pathname = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
   const { default: worker } = await import(workerUrl.href);
 
   return worker.fetch(
-    new Request("http://localhost/", {
+    new Request(`http://localhost${pathname}`, {
       headers: { accept: "text/html" },
     }),
     {
@@ -44,6 +44,11 @@ test("server-renders Omar's project-management-led generalist portfolio", async 
   assert.match(html, /A five-product AI roadmap/i);
   assert.match(html, /Municipal AI pilot delivery/i);
   assert.match(html, /Digital growth for SMEs/i);
+  assert.match(html, /href="#main-content"[^>]*>\s*Skip to main content/i);
+  assert.match(html, /<main id="main-content" tabindex="-1">/i);
+  assert.match(html, /type="application\/ld\+json"/i);
+  assert.match(html, /"@type":"Person"/i);
+  assert.match(html, /<meta name="robots" content="index, follow"/i);
   assert.doesNotMatch(html, /Your site is taking shape|Building your site|codex-preview/i);
 });
 
@@ -79,4 +84,19 @@ test("ships the CV, social card, and favicon assets", async () => {
   assert.equal(pdf.subarray(0, 4).toString(), "%PDF");
   assert.equal(socialCard.subarray(1, 4).toString(), "PNG");
   assert.match(favicon, /<svg\b/i);
+});
+
+test("publishes search-engine discovery routes", async () => {
+  const [robotsResponse, sitemapResponse] = await Promise.all([
+    render("/robots.txt"),
+    render("/sitemap.xml"),
+  ]);
+
+  assert.equal(robotsResponse.status, 200);
+  assert.match(robotsResponse.headers.get("content-type") ?? "", /text\/plain/i);
+  assert.match(await robotsResponse.text(), /Sitemap: .*\/sitemap\.xml/i);
+
+  assert.equal(sitemapResponse.status, 200);
+  assert.match(sitemapResponse.headers.get("content-type") ?? "", /xml/i);
+  assert.match(await sitemapResponse.text(), /<loc>https:\/\/omar-faruque-cv-2026\.rashed829489\.chatgpt\.site<\/loc>/i);
 });

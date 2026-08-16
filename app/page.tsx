@@ -141,11 +141,41 @@ const certifications = [
 
 const tools = ["ClickUp", "Jira", "Notion", "GitHub", "Postman", "Slack"];
 
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Omar Faruque",
+  jobTitle: "Project Manager and Cross-Functional Operator",
+  email: "mailto:omarfaruque32@gmail.com",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Cumilla",
+    addressCountry: "Bangladesh",
+  },
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: "Jiangxi Normal University",
+  },
+  worksFor: {
+    "@type": "Organization",
+    name: "KI-Quadrat Systemhaus GmbH",
+  },
+  sameAs: ["https://www.linkedin.com/in/omarfaruquerajim"],
+  knowsAbout: [
+    "Project Management",
+    "AI Product Delivery",
+    "GovTech",
+    "SaaS",
+    "Digital Strategy",
+    "Cross-Functional Leadership",
+  ],
+};
+
 export default function Home() {
   return (
-    <main id="main-content">
-      <a className="skip-link" href="#profile">
-        Skip to profile
+    <>
+      <a className="skip-link" href="#main-content">
+        Skip to main content
       </a>
 
       <header className="site-header">
@@ -159,10 +189,23 @@ export default function Home() {
           <a href="#capabilities">Capabilities</a>
           <a href="#contact">Contact</a>
         </nav>
-        <a className="header-link" href="/Omar_Faruque_CV.pdf" download>
+        <a
+          className="header-link"
+          href="/Omar_Faruque_CV.pdf"
+          download
+          aria-label="Download Omar Faruque’s CV"
+        >
           Download CV <span aria-hidden="true">↘</span>
         </a>
       </header>
+
+      <main id="main-content" tabIndex={-1}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(personSchema).replace(/</g, "\\u003c"),
+          }}
+        />
 
       <section className="hero" id="top" aria-labelledby="hero-title">
         <div className="hero-index" aria-hidden="true">
@@ -248,7 +291,12 @@ export default function Home() {
         <div className="section-content">
           <div className="section-heading-row">
             <h2>Experience with a clear through-line</h2>
-            <a href="/Omar_Faruque_CV.pdf" target="_blank" rel="noreferrer">
+            <a
+              href="/Omar_Faruque_CV.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View Omar Faruque’s full CV in a new tab"
+            >
               View full CV <span aria-hidden="true">↗</span>
             </a>
           </div>
@@ -437,21 +485,28 @@ export default function Home() {
           <a
             href="https://www.linkedin.com/in/omarfaruquerajim"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
+            aria-label="Omar Faruque on LinkedIn (opens in a new tab)"
           >
             LinkedIn <span aria-hidden="true">↗</span>
           </a>
-          <a href="/Omar_Faruque_CV.pdf" download>
+          <a
+            href="/Omar_Faruque_CV.pdf"
+            download
+            aria-label="Download Omar Faruque’s CV"
+          >
             Download CV <span aria-hidden="true">↓</span>
           </a>
         </div>
       </section>
+
+      </main>
 
       <footer>
         <span>© 2026 Omar Faruque</span>
         <span>Project Manager & Cross-Functional Operator</span>
         <a href="#top">Back to top ↑</a>
       </footer>
-    </main>
+    </>
   );
 }
