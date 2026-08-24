@@ -49,6 +49,10 @@ test("server-renders Omar's project-management-led generalist portfolio", async 
   assert.match(html, /type="application\/ld\+json"/i);
   assert.match(html, /"@type":"Person"/i);
   assert.match(html, /<meta name="robots" content="index, follow"/i);
+  assert.match(
+    html,
+    /<meta name="google-site-verification" content="FMBDw3l-BjmCyd3XsIGQV_9O6sS4fAkP0MC6OCR62_0"/i,
+  );
   assert.doesNotMatch(html, /Your site is taking shape|Building your site|codex-preview/i);
 });
 
