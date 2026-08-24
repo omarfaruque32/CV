@@ -89,8 +89,26 @@ actions tied to the current ChatGPT user. Leave public content anonymous.
 
 - `npm run dev`: start local development
 - `npm run build`: verify the vinext build output
+- `npm run dev:vercel`: start the native Next.js development server
+- `npm run build:vercel`: verify the native Next.js/Vercel build
 - `npm test`: build the starter and verify its rendered loading skeleton
 - `npm run db:generate`: generate Drizzle migrations after schema changes
+
+## Vercel deployment
+
+The root `vercel.json` keeps Vercel on the native Next.js build path while the
+default scripts remain compatible with OpenAI Sites.
+
+1. Upload this folder or import its repository into Vercel, then keep the
+   detected Next.js settings.
+2. Choose the desired project name; Vercel uses it for the free `vercel.app`
+   production address when that name is available.
+3. Deploy. Vercel's production URL is used automatically for canonical,
+   sitemap, robots, and social metadata when system environment variables are
+   exposed.
+4. If system environment variables are disabled, set `NEXT_PUBLIC_SITE_URL` to
+   the complete production origin, such as `https://omar-faruque.vercel.app`,
+   and redeploy.
 
 ## Learn More
 

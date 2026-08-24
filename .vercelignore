@@ -1,0 +1,21 @@
+.openai
+.next
+.vinext
+.wrangler
+dist
+node_modules
+output
+outputs
+tmp
+work
+
+# Cloudflare/OpenAI Sites build surfaces are not used by Vercel.
+build
+db
+drizzle
+examples
+worker
+drizzle.config.ts
+vite.config.ts
+pnpm-lock.yaml
+pnpm-workspace.yaml
