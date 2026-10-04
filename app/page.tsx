@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const experiences = [
   {
     period: "Sep 2024 — Present",
@@ -47,7 +49,7 @@ const earlierExperience = [
   },
   {
     period: "Jan 2018 — Mar 2020",
-    role: "International Students Recruiter",
+    role: "International Student Recruiter",
     company: "Elvon International · Nanchang, China",
     value: "Managed relationships and end-to-end student application pipelines.",
   },
@@ -74,7 +76,7 @@ const selectedWork = [
     challenge:
       "Deliver public-service AI in environments shaped by trust, security, and infrastructure constraints.",
     contribution:
-      "Coordinate on-premise readiness, acceptance criteria, delivery risk, and compliance-aware stakeholders.",
+      "Coordinate on-premises readiness, acceptance criteria, delivery risk, and compliance-aware stakeholders.",
     outcome:
       "Helped move pilots forward with stronger operational clarity and stakeholder confidence.",
   },
@@ -145,7 +147,7 @@ const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Omar Faruque",
-  jobTitle: "Project Manager and Cross-Functional Operator",
+  jobTitle: "Technical Project Manager",
   email: "mailto:omarfaruque32@gmail.com",
   address: {
     "@type": "PostalAddress",
@@ -212,12 +214,21 @@ export default function Home() {
           PORTFOLIO / 2026
         </div>
         <div className="hero-title-wrap">
-          <p className="eyebrow">Project Manager & Cross-Functional Operator</p>
+          <p className="eyebrow">Technical Project Manager · AI, GovTech & SaaS Delivery</p>
           <h1 id="hero-title">
             Omar
             <br />
             <em>Faruque.</em>
           </h1>
+        </div>
+        <div className="hero-portrait">
+          <Image
+            src="/omar-faruque.jpg"
+            alt="Omar Faruque, Technical Project Manager"
+            fill
+            priority
+            sizes="(max-width: 800px) calc(100vw - 79px), (max-width: 1100px) 300px, 340px"
+          />
         </div>
         <div className="hero-intro">
           <p className="hero-kicker">Projects · Products · People · Growth</p>
@@ -263,16 +274,15 @@ export default function Home() {
         </div>
         <div className="section-content profile-copy">
           <p className="display-copy">
-            Project management is my core discipline. Breadth is the advantage
-            I bring.
+            Technical project delivery is my core discipline. Cross-functional
+            experience is the advantage I bring.
           </p>
           <div className="profile-columns">
             <p>
-              I’m a project manager and cross-functional generalist with
-              experience across AI products, GovTech, digital strategy,
-              recruitment, and international education. I bring structure to
-              ambiguity, turn priorities into plans, and keep teams moving
-              toward shared outcomes.
+              I’m a technical project manager with experience coordinating AI,
+              GovTech, and SaaS delivery across distributed European teams. I
+              bring structure to ambiguity, turn priorities into release-ready
+              plans, and keep teams moving toward shared outcomes.
             </p>
             <p>
               My range helps me see the whole system: customer needs,
@@ -404,7 +414,7 @@ export default function Home() {
           <p>Capabilities</p>
         </div>
         <div className="section-content">
-          <h2>A generalist toolkit, organised around delivery</h2>
+          <h2>A cross-functional toolkit, organised around delivery</h2>
           <div className="capability-grid">
             {capabilities.map((capability, index) => (
               <article className="capability" key={capability.label}>
@@ -456,7 +466,7 @@ export default function Home() {
             <p className="eyebrow">Languages</p>
             <div>
               <span>English</span>
-              <strong>Native / Bilingual</strong>
+              <strong>Full professional proficiency</strong>
             </div>
             <div>
               <span>Bengali</span>
@@ -504,7 +514,7 @@ export default function Home() {
 
       <footer>
         <span>© 2026 Omar Faruque</span>
-        <span>Project Manager & Cross-Functional Operator</span>
+        <span>Technical Project Manager · AI, GovTech & SaaS Delivery</span>
         <a href="#top">Back to top ↑</a>
       </footer>
     </>

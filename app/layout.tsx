@@ -4,9 +4,9 @@ import { SITE_URL } from "./site-config";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Omar Faruque — Project Manager & Cross-Functional Operator",
+  title: "Omar Faruque — Technical Project Manager",
   description:
-    "Project manager and cross-functional generalist connecting strategy, people, and delivery across technology, operations, and growth.",
+    "Technical project manager coordinating AI, GovTech, SaaS, QA, and cross-functional delivery across distributed teams.",
   applicationName: "Omar Faruque Portfolio",
   authors: [{ name: "Omar Faruque", url: SITE_URL }],
   creator: "Omar Faruque",
@@ -14,8 +14,7 @@ export const metadata: Metadata = {
   category: "Portfolio",
   keywords: [
     "Project Manager",
-    "Cross-Functional Operator",
-    "Generalist",
+    "Technical Project Manager",
     "AI Delivery",
     "GovTech",
     "SaaS",
@@ -42,9 +41,9 @@ export const metadata: Metadata = {
     shortcut: "/favicon.svg",
   },
   openGraph: {
-    title: "Omar Faruque — Project Manager & Cross-Functional Operator",
+    title: "Omar Faruque — Technical Project Manager",
     description:
-      "Turning complex ideas into clear, executable projects across technology, operations, and growth.",
+      "Coordinating AI, GovTech, SaaS, QA, and cross-functional delivery across distributed teams.",
     type: "profile",
     locale: "en_US",
     siteName: "Omar Faruque Portfolio",
@@ -54,15 +53,15 @@ export const metadata: Metadata = {
         url: "/og.png",
         width: 1730,
         height: 909,
-        alt: "Omar Faruque — Project Manager and Cross-Functional Operator",
+        alt: "Omar Faruque — Technical Project Manager",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Omar Faruque — Project Manager & Cross-Functional Operator",
+    title: "Omar Faruque — Technical Project Manager",
     description:
-      "Turning complex ideas into clear, executable projects across technology, operations, and growth.",
+      "Coordinating AI, GovTech, SaaS, QA, and cross-functional delivery across distributed teams.",
     images: ["/og.png"],
   },
 };

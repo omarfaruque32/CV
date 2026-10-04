@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build Omar Faruque's ATS-friendly portfolio CV."""
+"""Build Omar Faruque's ATS-friendly, one-page project management CV."""
 
 from pathlib import Path
 import shutil
@@ -12,7 +12,6 @@ from reportlab.lib.units import mm
 from reportlab.platypus import (
     HRFlowable,
     KeepTogether,
-    PageBreak,
     Paragraph,
     SimpleDocTemplate,
     Spacer,
@@ -36,8 +35,8 @@ def build_styles():
             "Name",
             parent=base["Normal"],
             fontName="Helvetica-Bold",
-            fontSize=27,
-            leading=29,
+            fontSize=25,
+            leading=27,
             textColor=INK,
             spaceAfter=4,
         ),
@@ -45,38 +44,38 @@ def build_styles():
             "Role",
             parent=base["Normal"],
             fontName="Helvetica-Bold",
-            fontSize=9.2,
-            leading=12,
+            fontSize=9,
+            leading=11,
             tracking=1.1,
             textColor=BLUE,
-            spaceAfter=7,
+            spaceAfter=5,
         ),
         "contact": ParagraphStyle(
             "Contact",
             parent=base["Normal"],
             fontName="Helvetica",
-            fontSize=8.4,
-            leading=11,
+            fontSize=8.2,
+            leading=10,
             textColor=MUTED,
-            spaceAfter=12,
+            spaceAfter=8,
         ),
         "section": ParagraphStyle(
             "Section",
             parent=base["Normal"],
             fontName="Helvetica-Bold",
-            fontSize=9,
-            leading=11,
+            fontSize=8.8,
+            leading=10.5,
             tracking=1.2,
             textColor=BLUE,
-            spaceBefore=10,
-            spaceAfter=5,
+            spaceBefore=7,
+            spaceAfter=3,
         ),
         "summary": ParagraphStyle(
             "Summary",
             parent=base["Normal"],
             fontName="Helvetica",
-            fontSize=9.4,
-            leading=13.6,
+            fontSize=8.8,
+            leading=11.8,
             textColor=INK,
             spaceAfter=3,
         ),
@@ -84,59 +83,59 @@ def build_styles():
             "Body",
             parent=base["Normal"],
             fontName="Helvetica",
-            fontSize=8.8,
-            leading=12.3,
+            fontSize=8.2,
+            leading=10.6,
             textColor=INK,
-            spaceAfter=3,
+            spaceAfter=2,
         ),
         "skill": ParagraphStyle(
             "Skill",
             parent=base["Normal"],
             fontName="Helvetica",
-            fontSize=8.55,
-            leading=12,
+            fontSize=8.05,
+            leading=10.3,
             textColor=INK,
-            spaceAfter=2.5,
+            spaceAfter=1.5,
         ),
         "job": ParagraphStyle(
             "Job",
             parent=base["Normal"],
             fontName="Helvetica-Bold",
-            fontSize=10.4,
-            leading=12.5,
+            fontSize=9.8,
+            leading=11.5,
             textColor=INK,
-            spaceBefore=6,
+            spaceBefore=4,
             spaceAfter=1,
         ),
         "job_meta": ParagraphStyle(
             "JobMeta",
             parent=base["Normal"],
             fontName="Helvetica",
-            fontSize=8.25,
-            leading=10.6,
+            fontSize=7.95,
+            leading=9.5,
             textColor=MUTED,
-            spaceAfter=4,
+            spaceAfter=2.5,
         ),
         "bullet": ParagraphStyle(
             "Bullet",
             parent=base["Normal"],
             fontName="Helvetica",
-            fontSize=8.45,
-            leading=11.8,
+            fontSize=8.05,
+            leading=10.5,
             textColor=INK,
             leftIndent=11,
             firstLineIndent=-8,
-            spaceAfter=2.5,
+            spaceAfter=1.6,
         ),
         "project": ParagraphStyle(
             "Project",
             parent=base["Normal"],
             fontName="Helvetica-Bold",
-            fontSize=9.1,
-            leading=11.5,
+            fontSize=8.5,
+            leading=10.3,
             textColor=INK,
-            spaceBefore=4,
-            spaceAfter=2,
+            spaceBefore=2.5,
+            spaceAfter=1,
         ),
         "footer": ParagraphStyle(
             "Footer",
@@ -153,7 +152,7 @@ def build_styles():
 def section(title, styles):
     return [
         Paragraph(title.upper(), styles["section"]),
-        HRFlowable(width="100%", thickness=0.65, color=LINE, spaceAfter=4),
+        HRFlowable(width="100%", thickness=0.65, color=LINE, spaceAfter=3),
     ]
 
 
@@ -199,22 +198,22 @@ def build_pdf():
         pagesize=A4,
         leftMargin=18 * mm,
         rightMargin=18 * mm,
-        topMargin=15 * mm,
-        bottomMargin=21 * mm,
-        title="Omar Faruque - Project Manager and Cross-Functional Operator",
+        topMargin=11 * mm,
+        bottomMargin=18 * mm,
+        title="Omar Faruque - Technical Project Manager",
         author="Omar Faruque",
         subject="Curriculum Vitae",
-        keywords="project manager, cross-functional operator, AI delivery, GovTech, SaaS, digital strategy",
+        keywords="technical project manager, AI delivery, GovTech, SaaS, QA, cross-functional delivery",
     )
 
     story = [
         Paragraph("OMAR FARUQUE", styles["name"]),
         Paragraph(
-            "PROJECT MANAGER | CROSS-FUNCTIONAL OPERATOR",
+            "TECHNICAL PROJECT MANAGER | AI, GOVTECH &amp; SAAS DELIVERY",
             styles["role"],
         ),
         Paragraph(
-            "Race Course, Dhanmondi Road, Cumilla, Bangladesh &nbsp; | &nbsp; "
+            "Cumilla, Bangladesh &nbsp; | &nbsp; "
             '<link href="mailto:omarfaruque32@gmail.com" color="#2854E8">'
             "omarfaruque32@gmail.com</link> &nbsp; | &nbsp; "
             '<link href="https://www.linkedin.com/in/omarfaruquerajim" color="#2854E8">'
@@ -226,22 +225,22 @@ def build_pdf():
     story.extend(section("Professional Summary", styles))
     story.append(
         Paragraph(
-            "Project Manager and cross-functional generalist with experience delivering "
-            "technology, AI, digital strategy, recruitment, and international education "
-            "initiatives. Skilled at translating complex requirements into structured plans, "
-            "coordinating distributed teams, managing stakeholders, and maintaining progress "
-            "across competing priorities. Combines technical understanding, commercial "
-            "awareness, and strong communication to move projects from idea to execution.",
+            "Technical project manager with experience coordinating AI, GovTech, and SaaS "
+            "delivery across distributed European teams. Manages a 136-feature roadmap spanning "
+            "five products, translating business priorities into sprint plans, acceptance "
+            "criteria, and production releases. Combines project delivery, QA, stakeholder "
+            "management, and cross-cultural communication to move complex initiatives from "
+            "requirements to reliable execution.",
             styles["summary"],
         )
     )
 
     story.extend(section("Core Strengths", styles))
     strengths = [
-        ("Project Delivery", "Roadmaps, Agile and sprint planning, risk and dependency management, release coordination"),
-        ("Product and Technology", "AI and SaaS delivery, requirements definition, QA, acceptance criteria, compliance awareness"),
-        ("Business and Growth", "Digital strategy, SEO, content operations, audience understanding, performance reporting"),
-        ("People and Communication", "Cross-functional leadership, stakeholder reporting, facilitation, cross-cultural collaboration"),
+        ("Delivery", "Roadmaps, Agile and sprint planning, risk and dependency management, release coordination"),
+        ("Product and QA", "AI and SaaS delivery, requirements definition, acceptance criteria, release validation"),
+        ("Stakeholders", "Cross-functional leadership, reporting, facilitation, cross-cultural collaboration"),
+        ("Business", "Digital strategy, SEO, content operations, audience insight, performance reporting"),
     ]
     for label, detail in strengths:
         story.append(Paragraph(f"<b>{label}:</b> {detail}", styles["skill"]))
@@ -250,16 +249,15 @@ def build_pdf():
     story.append(
         job(
             "Senior Project Manager",
-            "KI-Quadrat Systemhaus GmbH (KI2)",
+            "KI-Quadrat Systemhaus GmbH (KI²)",
             "Vienna, Austria (Remote)",
             "September 2024 - Present",
             [
-                "Manage end-to-end execution of a 136-feature roadmap across five AI products, from sprint-ready specifications to production deployment.",
+                "Own end-to-end execution of a 136-feature roadmap across five AI products, from sprint-ready specifications to production deployment.",
                 "Coordinate engineering, QA, leadership, and municipal stakeholders across Austria, Romania, and Germany.",
-                "Sequence product dependencies, prioritise backlogs, define acceptance criteria, and maintain release readiness across distributed teams.",
-                "Manage delivery risks within ISO 27001, ISO 42001, GDPR, and EU data-residency requirements.",
-                "Coordinate a municipal pilot in an on-premise Ubuntu and Hyper-V environment with WireGuard VPN, LDAP/AD, and Cloudflare Tunnel connectivity.",
-                "Support version-controlled releases, rollback planning, and post-release quality monitoring through PostHog and Langfuse.",
+                "Translate product dependencies into prioritised backlogs, acceptance criteria, and release-ready work for distributed teams.",
+                "Manage delivery risk within ISO 27001, ISO 42001, GDPR, and EU data residency requirements.",
+                "Coordinate a municipal pilot in an on-premises Ubuntu and Hyper-V environment using WireGuard VPN, LDAP/AD, and Cloudflare Tunnel connectivity.",
             ],
             styles,
         )
@@ -271,25 +269,23 @@ def build_pdf():
             "Berlin, Germany",
             "November 2022 - August 2024",
             [
-                "Led planning, execution, and delivery for AI product initiatives with defined scope, clear objectives, and measurable milestones.",
-                "Built accountable cross-functional teams around shared delivery outcomes and collaborative workflows.",
-                "Maintained momentum through early risk identification, proactive unblocking, and structured communication between stakeholders and engineering.",
+                "Led AI product delivery from scope definition through milestone tracking, keeping engineering and stakeholders aligned on priorities.",
+                "Established accountable cross-functional workflows around shared delivery outcomes and clear ownership.",
+                "Maintained momentum through early risk identification, proactive unblocking, and structured stakeholder communication.",
             ],
             styles,
         )
     )
 
-    story.append(PageBreak())
-    story.extend(section("Professional Experience - Continued", styles))
+    story.extend(section("Earlier and Concurrent Experience", styles))
     story.append(
         job(
-            "Digital Marketing Manager",
+            "Digital Marketing Manager (Concurrent)",
             "My Digital Consultant",
             "Dhaka, Bangladesh",
             "March 2019 - August 2023",
             [
-                "Designed goal-driven digital strategies for SME clients across multiple industries, connecting audience needs to execution.",
-                "Improved SEO performance and organic visibility while managing content calendars, email campaigns, reporting, and client communication.",
+                "Designed digital strategies for SME clients and managed SEO, content calendars, email campaigns, reporting, and client communication.",
             ],
             styles,
         )
@@ -308,7 +304,7 @@ def build_pdf():
     )
     story.append(
         job(
-            "International Students Recruiter",
+            "International Student Recruiter",
             "Elvon International",
             "Nanchang, China",
             "January 2018 - March 2020",
@@ -319,29 +315,10 @@ def build_pdf():
         )
     )
 
-    story.extend(section("Selected Project Stories", styles))
-    projects = [
-        (
-            "Five-product AI roadmap | Product delivery",
-            "Converted business priorities into specifications, sprint plans, ownership, and coordinated releases across 136 features and five products.",
-        ),
-        (
-            "Municipal AI pilot | GovTech operations",
-            "Coordinated infrastructure readiness, acceptance criteria, delivery risk, and compliance-aware stakeholders for a secure public-service pilot.",
-        ),
-        (
-            "SME digital growth | Business and growth",
-            "Structured audience-led strategy, content operations, SEO, and performance reporting to improve visibility and decision-making.",
-        ),
-    ]
-    for title, detail in projects:
-        story.append(Paragraph(title, styles["project"]))
-        story.append(Paragraph(detail, styles["body"]))
-
     story.extend(section("Education and Credentials", styles))
     story.append(
         Paragraph(
-            "<b>Bachelor of Engineering, Computer Science and Engineering</b><br/>"
+            "<b>Bachelor of Engineering in Computer Science and Engineering</b><br/>"
             "Jiangxi Normal University | Nanchang, China | September 2017 - June 2021",
             styles["body"],
         )
@@ -366,7 +343,7 @@ def build_pdf():
     )
     story.append(
         Paragraph(
-            "<b>Languages:</b> English - Native / Bilingual; Bengali - Native; Chinese (Mandarin) - Elementary",
+            "<b>Languages:</b> Bengali - Native; English - Full professional proficiency; Chinese (Mandarin) - Elementary",
             styles["skill"],
         )
     )

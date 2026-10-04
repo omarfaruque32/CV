@@ -23,7 +23,7 @@ async function render(pathname = "/") {
   );
 }
 
-test("server-renders Omar's project-management-led generalist portfolio", async () => {
+test("server-renders Omar's technical project management portfolio", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
@@ -31,7 +31,7 @@ test("server-renders Omar's project-management-led generalist portfolio", async 
   const html = await response.text();
   assert.match(
     html,
-    /<title>Omar Faruque — Project Manager &amp; Cross-Functional Operator<\/title>/i,
+    /<title>Omar Faruque — Technical Project Manager<\/title>/i,
   );
   assert.match(
     html,
@@ -39,7 +39,7 @@ test("server-renders Omar's project-management-led generalist portfolio", async 
   );
   assert.match(
     html,
-    /Project management is my core discipline\. Breadth is the advantage I bring\./i,
+    /Technical project delivery is my core discipline\. Cross-functional experience is the advantage I bring\./i,
   );
   assert.match(html, /A five-product AI roadmap/i);
   assert.match(html, /Municipal AI pilot delivery/i);
@@ -102,5 +102,5 @@ test("publishes search-engine discovery routes", async () => {
 
   assert.equal(sitemapResponse.status, 200);
   assert.match(sitemapResponse.headers.get("content-type") ?? "", /xml/i);
-  assert.match(await sitemapResponse.text(), /<loc>https:\/\/omar-faruque-cv-2026\.rashed829489\.chatgpt\.site<\/loc>/i);
+  assert.match(await sitemapResponse.text(), /<loc>https:\/\/omar-faruque-two\.vercel\.app<\/loc>/i);
 });
