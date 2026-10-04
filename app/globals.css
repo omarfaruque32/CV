@@ -924,10 +924,6 @@ footer a {
   will-change: transform;
 }
 
-.site-breaker-shell.is-disabled {
-  display: none;
-}
-
 .site-breaker-character {
   position: relative;
   width: auto;
@@ -1100,55 +1096,10 @@ body.site-breaker-screen-shake footer {
   will-change: transform, opacity, filter, clip-path;
 }
 
-.site-breaker-toggle {
-  position: fixed;
-  right: 18px;
-  bottom: 18px;
-  z-index: 50;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 38px;
-  padding: 9px 12px;
-  border: 1px solid rgba(23, 26, 33, 0.3);
-  border-radius: 999px;
-  color: var(--ink);
-  background: rgba(251, 249, 243, 0.92);
-  box-shadow: 0 8px 28px rgba(23, 26, 33, 0.12);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  cursor: pointer;
-  font: 700 10px var(--mono);
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  transition: color 160ms ease, border-color 160ms ease, transform 160ms ease;
-}
-
-.site-breaker-toggle > span {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--blue);
-  box-shadow: 0 0 0 4px rgba(40, 84, 232, 0.14);
-}
-
-.site-breaker-toggle[aria-pressed="false"] > span {
-  background: var(--muted);
-  box-shadow: none;
-}
-
-.site-breaker-toggle:hover,
-.site-breaker-toggle:focus-visible {
-  color: var(--blue);
-  border-color: var(--blue);
-  outline: none;
-  transform: translateY(-2px);
-}
-
 .site-breaker-sound-toggle {
   position: fixed;
   right: 18px;
-  bottom: 66px;
+  bottom: 18px;
   z-index: 50;
   min-height: 34px;
   padding: 8px 12px;
@@ -1791,14 +1742,9 @@ body.site-breaker-screen-shake footer {
     height: 142px;
   }
 
-  .site-breaker-toggle {
-    right: 10px;
-    bottom: 10px;
-  }
-
   .site-breaker-sound-toggle {
     right: 10px;
-    bottom: 56px;
+    bottom: 10px;
   }
 
   .site-breaker-impact {
@@ -1822,8 +1768,7 @@ body.site-breaker-screen-shake footer {
   .site-breaker-shell,
   .site-breaker-impact,
   .site-breaker-debris,
-  .site-breaker-sound-toggle,
-  .site-breaker-toggle {
+  .site-breaker-sound-toggle {
     display: none !important;
   }
 }

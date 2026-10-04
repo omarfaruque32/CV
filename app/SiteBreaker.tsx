@@ -178,7 +178,6 @@ const makeDebris = (x: number, y: number, seed: number): Debris[] => {
 };
 
 export default function SiteBreaker() {
-  const [enabled, setEnabled] = useState(true);
   const [phase, setPhase] = useState<Phase>("resting");
   const [position, setPosition] = useState<Position>({
     x: -180,
@@ -239,7 +238,7 @@ export default function SiteBreaker() {
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    if (!enabled || reduceMotion) {
+    if (reduceMotion) {
       document.body.classList.remove("site-breaker-screen-shake");
       document
         .querySelectorAll(".site-breaker-broken")
@@ -398,7 +397,7 @@ export default function SiteBreaker() {
         .querySelectorAll(".site-breaker-broken")
         .forEach((element) => element.classList.remove("site-breaker-broken"));
     };
-  }, [enabled]);
+  }, []);
 
   const breakerStyle: BreakerStyle = {
     "--breaker-x": `${position.x}px`,
@@ -410,7 +409,7 @@ export default function SiteBreaker() {
   return (
     <>
       <div
-        className={`site-breaker-shell is-${phase}${enabled ? "" : " is-disabled"}`}
+        className={`site-breaker-shell is-${phase}`}
         style={breakerStyle}
         aria-hidden="true"
       >
@@ -458,7 +457,7 @@ export default function SiteBreaker() {
         })}
       </div>
 
-      {enabled && !soundReady ? (
+      {!soundReady ? (
         <button
           className="site-breaker-sound-toggle"
           type="button"
@@ -467,23 +466,6 @@ export default function SiteBreaker() {
           Enable sound
         </button>
       ) : null}
-
-      <button
-        className="site-breaker-toggle"
-        type="button"
-        aria-pressed={enabled}
-        onClick={() => {
-          setEnabled((current) => !current);
-          setPhase("resting");
-          setImpact(null);
-          setDebris([]);
-          setBattleCryId(null);
-          document.body.classList.remove("site-breaker-screen-shake");
-        }}
-      >
-        <span aria-hidden="true" />
-        Breaker {enabled ? "on" : "off"}
-      </button>
     </>
   );
 }
