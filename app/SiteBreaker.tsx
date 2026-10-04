@@ -135,6 +135,28 @@ const playBreakSound = (context: AudioContext) => {
   });
 };
 
+const playChargeSound = (context: AudioContext) => {
+  if (context.state !== "running") return;
+
+  const now = context.currentTime;
+  const horn = context.createOscillator();
+  const hornFilter = context.createBiquadFilter();
+  const hornGain = context.createGain();
+
+  horn.type = "sawtooth";
+  horn.frequency.setValueAtTime(145, now);
+  horn.frequency.exponentialRampToValueAtTime(360, now + 0.18);
+  horn.frequency.exponentialRampToValueAtTime(205, now + 0.4);
+  hornFilter.type = "lowpass";
+  hornFilter.frequency.setValueAtTime(1100, now);
+  hornGain.gain.setValueAtTime(0.0001, now);
+  hornGain.gain.exponentialRampToValueAtTime(0.055, now + 0.025);
+  hornGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.44);
+  horn.connect(hornFilter).connect(hornGain).connect(context.destination);
+  horn.start(now);
+  horn.stop(now + 0.45);
+};
+
 const makeDebris = (x: number, y: number, seed: number): Debris[] => {
   const colors = ["#171a21", "#2854e8", "#f4f1e8", "#8e6d45"];
 
@@ -166,6 +188,7 @@ export default function SiteBreaker() {
   const [facing, setFacing] = useState(1);
   const [impact, setImpact] = useState<Impact | null>(null);
   const [debris, setDebris] = useState<Debris[]>([]);
+  const [battleCryId, setBattleCryId] = useState<number | null>(null);
   const [soundReady, setSoundReady] = useState(false);
   const positionRef = useRef(position);
   const lastTargetRef = useRef<Element | null>(null);
@@ -217,6 +240,7 @@ export default function SiteBreaker() {
     ).matches;
 
     if (!enabled || reduceMotion) {
+      document.body.classList.remove("site-breaker-screen-shake");
       document
         .querySelectorAll(".site-breaker-broken")
         .forEach((element) => element.classList.remove("site-breaker-broken"));
@@ -295,9 +319,17 @@ export default function SiteBreaker() {
         destination.y - positionRef.current.y,
       );
       const travelTime = clamp(distance * 1.7, 700, 1700);
+      const shouldCallOut = distance > 320 && Math.random() > 0.38;
 
       setFacing(destination.x >= positionRef.current.x ? 1 : -1);
       setPhase("running");
+      if (shouldCallOut) {
+        const cryId = Date.now();
+        setBattleCryId(cryId);
+        const audioContext = audioContextRef.current;
+        if (audioContext) playChargeSound(audioContext);
+        schedule(() => setBattleCryId(null), 920);
+      }
       const nextPosition = {
         ...destination,
         duration: travelTime,
@@ -325,6 +357,9 @@ export default function SiteBreaker() {
         schedule(() => {
           const audioContext = audioContextRef.current;
           if (audioContext) playBreakSound(audioContext);
+          document.body.classList.remove("site-breaker-screen-shake");
+          void document.body.offsetWidth;
+          document.body.classList.add("site-breaker-screen-shake");
           target.classList.remove("site-breaker-broken");
           // Restart the damage animation if a target is selected twice later.
           void target.getBoundingClientRect();
@@ -336,6 +371,10 @@ export default function SiteBreaker() {
             setImpact(null);
             setDebris([]);
           }, 1050);
+
+          schedule(() => {
+            document.body.classList.remove("site-breaker-screen-shake");
+          }, 460);
 
           schedule(() => {
             target.classList.remove("site-breaker-broken");
@@ -354,6 +393,7 @@ export default function SiteBreaker() {
     return () => {
       cancelled = true;
       timers.forEach((timer) => window.clearTimeout(timer));
+      document.body.classList.remove("site-breaker-screen-shake");
       document
         .querySelectorAll(".site-breaker-broken")
         .forEach((element) => element.classList.remove("site-breaker-broken"));
@@ -374,9 +414,15 @@ export default function SiteBreaker() {
         style={breakerStyle}
         aria-hidden="true"
       >
+        {battleCryId ? (
+          <span className="site-breaker-battle-cry" key={battleCryId}>
+            Hog rider!
+          </span>
+        ) : null}
         <div className="site-breaker-character">
           <span className="site-breaker-shadow" />
           <span className="site-breaker-dust" />
+          <span className="site-breaker-speedlines" />
           <span className="site-breaker-sprite" />
         </div>
       </div>
@@ -431,6 +477,8 @@ export default function SiteBreaker() {
           setPhase("resting");
           setImpact(null);
           setDebris([]);
+          setBattleCryId(null);
+          document.body.classList.remove("site-breaker-screen-shake");
         }}
       >
         <span aria-hidden="true" />
