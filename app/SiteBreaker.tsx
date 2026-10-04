@@ -1,0 +1,332 @@
+"use client";
+
+import type { CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+
+type Phase = "resting" | "running" | "smashing";
+
+type Position = {
+  x: number;
+  y: number;
+  duration: number;
+};
+
+type Impact = {
+  id: number;
+  x: number;
+  y: number;
+};
+
+type Debris = {
+  id: number;
+  x: number;
+  y: number;
+  size: number;
+  dx: number;
+  dy: number;
+  rotation: number;
+  color: string;
+};
+
+type BreakerStyle = CSSProperties & {
+  "--breaker-x": string;
+  "--breaker-y": string;
+  "--breaker-duration": string;
+  "--breaker-facing": number;
+};
+
+type DebrisStyle = CSSProperties & {
+  "--debris-x": string;
+  "--debris-y": string;
+  "--debris-dx": string;
+  "--debris-dy": string;
+  "--debris-rotation": string;
+  "--debris-size": string;
+  "--debris-color": string;
+};
+
+const TARGET_SELECTOR = [
+  ".hero-title-wrap",
+  ".hero-portrait",
+  ".hero-intro",
+  ".proof-strip > div",
+  ".profile-copy > *",
+  ".experience-item",
+  ".earlier-row",
+  ".impact-band > div",
+  ".impact-band > p",
+  ".work-card",
+  ".capability",
+  ".tools-row",
+  ".education-block",
+  ".certification-block",
+  ".language-block",
+  ".contact-section h2",
+  ".contact-actions",
+  "footer > *",
+].join(",");
+
+const clamp = (value: number, minimum: number, maximum: number) =>
+  Math.min(Math.max(value, minimum), maximum);
+
+const randomBetween = (minimum: number, maximum: number) =>
+  Math.random() * (maximum - minimum) + minimum;
+
+const makeDebris = (x: number, y: number, seed: number): Debris[] => {
+  const colors = ["#171a21", "#2854e8", "#f4f1e8", "#8e6d45"];
+
+  return Array.from({ length: 12 }, (_, index) => {
+    const angle = randomBetween(Math.PI * 1.08, Math.PI * 1.92);
+    const force = randomBetween(34, 105);
+
+    return {
+      id: seed + index,
+      x,
+      y,
+      size: randomBetween(5, 14),
+      dx: Math.cos(angle) * force,
+      dy: Math.sin(angle) * force - randomBetween(8, 40),
+      rotation: randomBetween(-210, 210),
+      color: colors[index % colors.length],
+    };
+  });
+};
+
+export default function SiteBreaker() {
+  const [enabled, setEnabled] = useState(true);
+  const [phase, setPhase] = useState<Phase>("resting");
+  const [position, setPosition] = useState<Position>({
+    x: -180,
+    y: 260,
+    duration: 0,
+  });
+  const [facing, setFacing] = useState(1);
+  const [impact, setImpact] = useState<Impact | null>(null);
+  const [debris, setDebris] = useState<Debris[]>([]);
+  const positionRef = useRef(position);
+  const lastTargetRef = useRef<Element | null>(null);
+
+  useEffect(() => {
+    positionRef.current = position;
+  }, [position]);
+
+  useEffect(() => {
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (!enabled || reduceMotion) {
+      document
+        .querySelectorAll(".site-breaker-broken")
+        .forEach((element) => element.classList.remove("site-breaker-broken"));
+      return;
+    }
+
+    let cancelled = false;
+    const timers: number[] = [];
+
+    const schedule = (callback: () => void, delay: number) => {
+      const timer = window.setTimeout(() => {
+        if (!cancelled) callback();
+      }, delay);
+      timers.push(timer);
+    };
+
+    const characterMetrics = () => {
+      const mobile = window.innerWidth <= 640;
+      const height = mobile ? 142 : 190;
+      return { height, width: height * (250 / 462) };
+    };
+
+    const chooseTarget = () => {
+      const visibleTargets = Array.from(
+        document.querySelectorAll<HTMLElement>(TARGET_SELECTOR),
+      ).filter((element) => {
+        const rectangle = element.getBoundingClientRect();
+        return (
+          rectangle.width > 70 &&
+          rectangle.height > 24 &&
+          rectangle.bottom > 96 &&
+          rectangle.top < window.innerHeight - 32 &&
+          rectangle.right > 0 &&
+          rectangle.left < window.innerWidth
+        );
+      });
+
+      if (visibleTargets.length === 0) {
+        schedule(chooseTarget, 1600);
+        return;
+      }
+
+      const freshTargets = visibleTargets.filter(
+        (element) => element !== lastTargetRef.current,
+      );
+      const targetPool = freshTargets.length > 0 ? freshTargets : visibleTargets;
+      const target = targetPool[Math.floor(Math.random() * targetPool.length)];
+      lastTargetRef.current = target;
+
+      const rectangle = target.getBoundingClientRect();
+      const character = characterMetrics();
+      const impactX = clamp(
+        rectangle.left + rectangle.width * randomBetween(0.35, 0.68),
+        28,
+        window.innerWidth - 28,
+      );
+      const impactY = clamp(
+        rectangle.top + rectangle.height * randomBetween(0.35, 0.7),
+        105,
+        window.innerHeight - 30,
+      );
+      const destination = {
+        x: clamp(
+          impactX - character.width * 0.52,
+          8,
+          window.innerWidth - character.width - 8,
+        ),
+        y: clamp(
+          impactY - character.height * 0.62,
+          84,
+          window.innerHeight - character.height - 8,
+        ),
+      };
+      const distance = Math.hypot(
+        destination.x - positionRef.current.x,
+        destination.y - positionRef.current.y,
+      );
+      const travelTime = clamp(distance * 1.7, 700, 1700);
+
+      setFacing(destination.x >= positionRef.current.x ? 1 : -1);
+      setPhase("running");
+      const nextPosition = {
+        ...destination,
+        duration: travelTime,
+      };
+      positionRef.current = nextPosition;
+      setPosition(nextPosition);
+
+      schedule(() => {
+        const targetRectangle = target.getBoundingClientRect();
+        const liveImpactX = clamp(
+          targetRectangle.left + targetRectangle.width * 0.52,
+          22,
+          window.innerWidth - 22,
+        );
+        const liveImpactY = clamp(
+          targetRectangle.top + targetRectangle.height * 0.52,
+          94,
+          window.innerHeight - 22,
+        );
+        const impactId = Date.now();
+
+        setPhase("smashing");
+        target.classList.remove("site-breaker-broken");
+        // Restart the damage animation if a target is selected twice later.
+        void target.getBoundingClientRect();
+        target.classList.add("site-breaker-broken");
+        setImpact({ id: impactId, x: liveImpactX, y: liveImpactY });
+        setDebris(makeDebris(liveImpactX, liveImpactY, impactId));
+
+        schedule(() => {
+          setImpact(null);
+          setDebris([]);
+        }, 1050);
+
+        schedule(() => {
+          target.classList.remove("site-breaker-broken");
+        }, 2600);
+
+        schedule(() => {
+          setPhase("resting");
+          schedule(chooseTarget, randomBetween(1600, 3200));
+        }, 760);
+      }, travelTime + 80);
+    };
+
+    schedule(chooseTarget, 1400);
+
+    return () => {
+      cancelled = true;
+      timers.forEach((timer) => window.clearTimeout(timer));
+      document
+        .querySelectorAll(".site-breaker-broken")
+        .forEach((element) => element.classList.remove("site-breaker-broken"));
+    };
+  }, [enabled]);
+
+  const breakerStyle: BreakerStyle = {
+    "--breaker-x": `${position.x}px`,
+    "--breaker-y": `${position.y}px`,
+    "--breaker-duration": `${position.duration}ms`,
+    "--breaker-facing": facing,
+  };
+
+  return (
+    <>
+      <div
+        className={`site-breaker-shell is-${phase}${enabled ? "" : " is-disabled"}`}
+        style={breakerStyle}
+        aria-hidden="true"
+      >
+        <div className="site-breaker-character">
+          <span className="site-breaker-shadow" />
+          <span className="site-breaker-dust" />
+          <Image
+            className="site-breaker-image"
+            src="/site-breaker.png"
+            alt=""
+            width="250"
+            height="462"
+            draggable="false"
+          />
+        </div>
+      </div>
+
+      {impact ? (
+        <span
+          key={impact.id}
+          className="site-breaker-impact"
+          style={{ left: impact.x, top: impact.y }}
+          aria-hidden="true"
+        />
+      ) : null}
+
+      <div className="site-breaker-debris" aria-hidden="true">
+        {debris.map((piece) => {
+          const debrisStyle: DebrisStyle = {
+            "--debris-x": `${piece.x}px`,
+            "--debris-y": `${piece.y}px`,
+            "--debris-dx": `${piece.dx}px`,
+            "--debris-dy": `${piece.dy}px`,
+            "--debris-rotation": `${piece.rotation}deg`,
+            "--debris-size": `${piece.size}px`,
+            "--debris-color": piece.color,
+          };
+
+          return (
+            <span
+              className="site-breaker-debris-piece"
+              key={piece.id}
+              style={debrisStyle}
+            />
+          );
+        })}
+      </div>
+
+      <button
+        className="site-breaker-toggle"
+        type="button"
+        aria-pressed={enabled}
+        onClick={() => {
+          setEnabled((current) => !current);
+          setPhase("resting");
+          setImpact(null);
+          setDebris([]);
+        }}
+      >
+        <span aria-hidden="true" />
+        Breaker {enabled ? "on" : "off"}
+      </button>
+    </>
+  );
+}

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import SiteBreaker from "./SiteBreaker";
 
 const experiences = [
   {
@@ -517,6 +518,8 @@ export default function Home() {
         <span>Technical Project Manager · AI, GovTech & SaaS Delivery</span>
         <a href="#top">Back to top ↑</a>
       </footer>
+
+      <SiteBreaker />
     </>
   );
 }
