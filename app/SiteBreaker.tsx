@@ -2,7 +2,6 @@
 
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 
 type Phase = "resting" | "running" | "smashing";
 
@@ -136,7 +135,7 @@ export default function SiteBreaker() {
     const characterMetrics = () => {
       const mobile = window.innerWidth <= 640;
       const height = mobile ? 142 : 190;
-      return { height, width: height * (250 / 462) };
+      return { height, width: height * (543 / 724) };
     };
 
     const chooseTarget = () => {
@@ -271,14 +270,7 @@ export default function SiteBreaker() {
         <div className="site-breaker-character">
           <span className="site-breaker-shadow" />
           <span className="site-breaker-dust" />
-          <Image
-            className="site-breaker-image"
-            src="/site-breaker.png"
-            alt=""
-            width="250"
-            height="462"
-            draggable="false"
-          />
+          <span className="site-breaker-sprite" />
         </div>
       </div>
 
