@@ -104,6 +104,74 @@ const playBreakSound = (context: AudioContext) => {
   crack.start(now);
   crack.stop(now + noiseDuration);
 
+  const glassDuration = 0.58;
+  const glassBuffer = context.createBuffer(
+    1,
+    Math.ceil(context.sampleRate * glassDuration),
+    context.sampleRate,
+  );
+  const glassData = glassBuffer.getChannelData(0);
+
+  for (let index = 0; index < glassData.length; index += 1) {
+    const progress = index / glassData.length;
+    const sparkle = Math.sin(progress * Math.PI * 94) * 0.24;
+    glassData[index] =
+      (Math.random() * 2 - 1 + sparkle) * Math.pow(1 - progress, 2.1);
+  }
+
+  const shatter = context.createBufferSource();
+  const shatterFilter = context.createBiquadFilter();
+  const shatterGain = context.createGain();
+  shatter.buffer = glassBuffer;
+  shatterFilter.type = "highpass";
+  shatterFilter.frequency.setValueAtTime(2450, now);
+  shatterFilter.Q.setValueAtTime(0.85, now);
+  shatterGain.gain.setValueAtTime(0.0001, now);
+  shatterGain.gain.exponentialRampToValueAtTime(0.12, now + 0.006);
+  shatterGain.gain.exponentialRampToValueAtTime(0.0001, now + glassDuration);
+  shatter
+    .connect(shatterFilter)
+    .connect(shatterGain)
+    .connect(context.destination);
+  shatter.start(now);
+  shatter.stop(now + glassDuration);
+
+  [1850, 2380, 3020, 3760, 4680, 5720, 6480].forEach(
+    (frequency, index) => {
+      const delay = 0.018 + index * 0.022 + Math.random() * 0.025;
+      const duration = 0.13 + Math.random() * 0.16;
+      const shard = context.createOscillator();
+      const shardGain = context.createGain();
+      const shardPan = context.createStereoPanner();
+
+      shard.type = index % 3 === 0 ? "triangle" : "sine";
+      shard.frequency.setValueAtTime(
+        frequency * randomBetween(0.94, 1.07),
+        now + delay,
+      );
+      shard.frequency.exponentialRampToValueAtTime(
+        frequency * randomBetween(0.52, 0.72),
+        now + delay + duration,
+      );
+      shardGain.gain.setValueAtTime(0.0001, now + delay);
+      shardGain.gain.exponentialRampToValueAtTime(
+        randomBetween(0.018, 0.034),
+        now + delay + 0.006,
+      );
+      shardGain.gain.exponentialRampToValueAtTime(
+        0.0001,
+        now + delay + duration,
+      );
+      shardPan.pan.setValueAtTime(index % 2 === 0 ? -0.58 : 0.58, now + delay);
+      shard
+        .connect(shardGain)
+        .connect(shardPan)
+        .connect(context.destination);
+      shard.start(now + delay);
+      shard.stop(now + delay + duration + 0.01);
+    },
+  );
+
   const thud = context.createOscillator();
   const thudGain = context.createGain();
   thud.type = "triangle";
