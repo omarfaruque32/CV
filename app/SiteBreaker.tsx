@@ -339,7 +339,7 @@ export default function SiteBreaker() {
 
           schedule(() => {
             target.classList.remove("site-breaker-broken");
-          }, 2600);
+          }, 5600);
         }, 320);
 
         schedule(() => {
