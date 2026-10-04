@@ -110,7 +110,9 @@ footer {
   background: var(--blue);
   font-weight: 800;
   letter-spacing: -0.06em;
-  transition: transform 180ms ease, background 180ms ease;
+  transition:
+    transform 180ms ease,
+    background 180ms ease;
 }
 
 .brand:hover {
@@ -289,7 +291,9 @@ footer a:focus-visible {
   font-weight: 800;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  transition: color 160ms ease, padding 160ms ease;
+  transition:
+    color 160ms ease,
+    padding 160ms ease;
 }
 
 .primary-action:hover,
@@ -878,7 +882,10 @@ footer a:focus-visible {
   border: 1px solid var(--line);
   border-radius: 999px;
   font-size: 13px;
-  transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease;
 }
 
 .contact-actions a:hover,
@@ -906,322 +913,91 @@ footer a {
   color: var(--ink);
 }
 
-/* Playful, non-destructive site-breaker overlay. */
-.site-breaker-shell {
-  --breaker-x: -180px;
-  --breaker-y: 260px;
-  --breaker-duration: 0ms;
-  --breaker-facing: 1;
+/* Decorative rider and temporary copies never intercept portfolio interactions. */
+.breaker-rider {
   position: fixed;
   top: 0;
   left: 0;
+  width: 120px;
+  height: 160px;
   z-index: 45;
-  width: 143px;
-  height: 190px;
   pointer-events: none;
-  transform: translate3d(var(--breaker-x), var(--breaker-y), 0);
-  transition: transform var(--breaker-duration) cubic-bezier(0.45, 0.03, 0.18, 1);
+  opacity: 0;
   will-change: transform;
 }
-
-.site-breaker-character {
-  position: relative;
-  width: auto;
-  height: 100%;
-  transform: scaleX(var(--breaker-facing));
-  transform-origin: center bottom;
-}
-
-.site-breaker-sprite {
-  display: block;
+.breaker-facing {
   width: 100%;
   height: 100%;
-  background-image: url("/breaker-run-v2.png");
-  background-repeat: no-repeat;
-  background-position: 0 0;
-  background-size: 400% 100%;
-  -webkit-user-select: none;
-  user-select: none;
-  filter: drop-shadow(0 11px 12px rgba(23, 26, 33, 0.2));
+  transform: scaleX(var(--breaker-facing, 1));
 }
-
-.site-breaker-shell.is-running .site-breaker-character {
-  animation: site-breaker-run 440ms ease-in-out infinite;
+.breaker-sprite {
+  width: 100%;
+  height: 100%;
+  background: url("/breaker-run-v2.png") 0 0 / 400% 100% no-repeat;
 }
-
-.site-breaker-shell.is-smashing .site-breaker-character {
-  animation: site-breaker-leap-smash 720ms cubic-bezier(0.2, 0.75, 0.22, 1) both;
+.breaker-rider[data-phase="running"] .breaker-sprite {
+  animation: breaker-frames 560ms steps(1) infinite;
 }
-
-.site-breaker-shell.is-running .site-breaker-sprite {
-  animation: site-breaker-run-frames 560ms linear infinite;
-}
-
-.site-breaker-shell.is-smashing .site-breaker-sprite {
+.breaker-rider[data-phase="smashing"] .breaker-sprite {
   background-image: url("/breaker-smash-v2.png");
-  animation: site-breaker-smash-frames 720ms linear both;
+  animation: breaker-frames 700ms steps(1) forwards;
 }
-
-.site-breaker-shadow {
-  position: absolute;
-  right: 5%;
-  bottom: 0;
-  left: 8%;
-  height: 12px;
-  border-radius: 50%;
-  background: rgba(23, 26, 33, 0.2);
-  filter: blur(4px);
-  transform: scaleX(var(--breaker-facing));
-}
-
-.site-breaker-dust {
-  position: absolute;
-  right: 12%;
-  bottom: 12px;
-  width: 9px;
-  height: 9px;
-  border: 2px solid rgba(23, 26, 33, 0.22);
-  border-radius: 50%;
-  opacity: 0;
-}
-
-.site-breaker-shell.is-running .site-breaker-dust {
-  animation: site-breaker-dust 620ms ease-out infinite;
-}
-
-.site-breaker-speedlines {
-  position: absolute;
-  top: 42%;
-  left: -32%;
-  z-index: -1;
-  width: 65%;
-  height: 34%;
-  opacity: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent 0 8px,
-    rgba(40, 84, 232, 0.48) 9px 11px,
-    transparent 12px 17px
-  );
-  filter: blur(0.4px);
-  transform: skewX(-24deg);
-}
-
-.site-breaker-shell.is-running .site-breaker-speedlines {
-  animation: site-breaker-speedlines 420ms linear infinite;
-}
-
-.site-breaker-battle-cry {
-  position: absolute;
-  top: -13px;
-  left: 50%;
-  z-index: 4;
-  padding: 7px 10px;
-  border: 2px solid var(--ink);
-  border-radius: 999px;
-  color: var(--paper);
-  background: var(--ink);
-  box-shadow: 4px 4px 0 var(--blue);
-  white-space: nowrap;
-  pointer-events: none;
-  font: 800 10px var(--mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  transform: translateX(-50%);
-  animation: site-breaker-battle-cry 920ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-
-body.site-breaker-screen-shake .site-header,
-body.site-breaker-screen-shake main,
-body.site-breaker-screen-shake footer {
-  animation: site-breaker-screen-shake 440ms linear both;
-}
-
-.site-breaker-impact {
-  position: fixed;
-  z-index: 44;
-  width: 112px;
-  height: 112px;
-  pointer-events: none;
-  border: 4px solid rgba(40, 84, 232, 0.84);
-  border-radius: 50%;
-  background:
-    linear-gradient(35deg, transparent 46%, var(--ink) 48%, var(--ink) 51%, transparent 53%),
-    linear-gradient(112deg, transparent 45%, var(--blue) 47%, var(--blue) 51%, transparent 53%);
-  transform: translate(-50%, -50%) scale(0.12) rotate(-20deg);
-  animation: site-breaker-impact 820ms ease-out forwards;
-}
-
-.site-breaker-impact::before,
-.site-breaker-impact::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 145%;
-  height: 3px;
-  background: var(--ink);
-  transform: translate(-50%, -50%) rotate(42deg);
-}
-
-.site-breaker-impact::after {
-  transform: translate(-50%, -50%) rotate(-28deg);
-}
-
-.site-breaker-debris {
+.breaker-effects {
   position: fixed;
   inset: 0;
-  z-index: 43;
+  z-index: 44;
+  pointer-events: none;
+  overflow: hidden;
+}
+.breaker-fracture {
+  position: absolute;
   overflow: hidden;
   pointer-events: none;
 }
-
-.site-breaker-debris-piece {
+.breaker-fragment {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: var(--debris-size);
-  height: calc(var(--debris-size) * 0.55);
-  border: 1px solid rgba(23, 26, 33, 0.24);
-  background: var(--debris-color);
-  transform: translate3d(var(--debris-x), var(--debris-y), 0);
-  animation: site-breaker-debris 980ms cubic-bezier(0.17, 0.67, 0.25, 1) forwards;
+  pointer-events: none;
+  transform-origin: center;
 }
-
-.site-breaker-broken {
-  position: relative;
-  z-index: 2;
-  animation: site-breaker-damage 5600ms cubic-bezier(0.2, 0.65, 0.22, 1) both;
-  transform-origin: 50% 55%;
-  will-change: transform, opacity, filter, clip-path;
+.breaker-dust {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  pointer-events: none;
 }
-
-.site-breaker-sound-toggle {
+.breaker-toggle {
   position: fixed;
-  right: 18px;
-  bottom: 18px;
+  right: max(8px, env(safe-area-inset-right));
+  bottom: max(8px, env(safe-area-inset-bottom));
   z-index: 50;
-  min-height: 34px;
-  padding: 8px 12px;
-  border: 1px solid rgba(40, 84, 232, 0.42);
+  min-height: 44px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
   border-radius: 999px;
-  color: var(--blue);
-  background: rgba(251, 249, 243, 0.94);
-  box-shadow: 0 8px 28px rgba(23, 26, 33, 0.1);
+  background: var(--paper-bright);
+  color: var(--ink);
+  font: 11px var(--mono);
   cursor: pointer;
-  font: 700 9px var(--mono);
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  transition: color 160ms ease, background 160ms ease, transform 160ms ease;
 }
-
-.site-breaker-sound-toggle:hover,
-.site-breaker-sound-toggle:focus-visible {
-  color: var(--paper);
-  background: var(--blue);
-  outline: none;
-  transform: translateY(-2px);
+.breaker-toggle:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 4px;
 }
-
-@keyframes site-breaker-run {
-  0%,
-  100% {
-    translate: 0 0;
-  }
-  50% {
-    translate: 0 -5px;
+@media (hover: hover) and (pointer: fine) {
+  .breaker-toggle:hover {
+    border-color: var(--blue);
+    color: var(--blue);
   }
 }
-
-@keyframes site-breaker-leap-smash {
+@keyframes breaker-frames {
   0% {
-    translate: 0 0;
-    rotate: 0deg;
-  }
-  34% {
-    translate: 0 -28px;
-    rotate: -4deg;
-  }
-  61% {
-    translate: 0 -5px;
-    rotate: 2deg;
-  }
-  72%,
-  100% {
-    translate: 0 0;
-    rotate: 0deg;
-  }
-}
-
-@keyframes site-breaker-speedlines {
-  0% {
-    opacity: 0;
-    translate: 22px 0;
-  }
-  28% {
-    opacity: 0.72;
-  }
-  100% {
-    opacity: 0;
-    translate: -34px 0;
-  }
-}
-
-@keyframes site-breaker-battle-cry {
-  0% {
-    opacity: 0;
-    scale: 0.68;
-    translate: 0 8px;
-  }
-  16%,
-  70% {
-    opacity: 1;
-    scale: 1;
-    translate: 0 0;
-  }
-  100% {
-    opacity: 0;
-    scale: 1.06;
-    translate: 0 -13px;
-  }
-}
-
-@keyframes site-breaker-screen-shake {
-  0%,
-  100% {
-    translate: 0 0;
-  }
-  14% {
-    translate: -4px 2px;
-  }
-  28% {
-    translate: 5px -3px;
-  }
-  43% {
-    translate: -3px -1px;
-  }
-  58% {
-    translate: 3px 2px;
-  }
-  74% {
-    translate: -2px 1px;
-  }
-  88% {
-    translate: 1px -1px;
-  }
-}
-
-@keyframes site-breaker-run-frames {
-  0%,
-  24.99% {
     background-position: 0 0;
   }
-  25%,
-  49.99% {
+  25% {
     background-position: 33.333% 0;
   }
-  50%,
-  74.99% {
+  50% {
     background-position: 66.667% 0;
   }
   75%,
@@ -1229,115 +1005,10 @@ body.site-breaker-screen-shake footer {
     background-position: 100% 0;
   }
 }
-
-@keyframes site-breaker-smash-frames {
-  0%,
-  21.99% {
-    background-position: 0 0;
-  }
-  22%,
-  44.99% {
-    background-position: 33.333% 0;
-  }
-  45%,
-  72.99% {
-    background-position: 66.667% 0;
-  }
-  73%,
-  100% {
-    background-position: 100% 0;
-  }
-}
-
-@keyframes site-breaker-dust {
-  0% {
-    opacity: 0.55;
-    transform: translate(0, 0) scale(0.5);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(48px, -10px) scale(2.4);
-  }
-}
-
-@keyframes site-breaker-impact {
-  0% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(0.1) rotate(-20deg);
-  }
-  55% {
-    opacity: 0.86;
-    transform: translate(-50%, -50%) scale(1) rotate(7deg);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(1.42) rotate(16deg);
-  }
-}
-
-@keyframes site-breaker-debris {
-  0% {
-    opacity: 1;
-    transform: translate3d(var(--debris-x), var(--debris-y), 0) rotate(0);
-  }
-  72% {
-    opacity: 0.92;
-  }
-  100% {
-    opacity: 0;
-    transform: translate3d(
-        calc(var(--debris-x) + var(--debris-dx)),
-        calc(var(--debris-y) + var(--debris-dy) + 95px),
-        0
-      )
-      rotate(var(--debris-rotation));
-  }
-}
-
-@keyframes site-breaker-damage {
-  0%,
-  2% {
-    opacity: 1;
-    filter: none;
-    clip-path: inset(0);
-    transform: none;
-  }
-  5% {
-    opacity: 0.96;
-    filter: saturate(0.35) contrast(1.45);
-    clip-path: polygon(0 0, 49% 0, 45% 38%, 100% 30%, 100% 100%, 0 100%);
-    transform: translate(-7px, 4px) rotate(-1.2deg);
-  }
-  10% {
-    opacity: 0.18;
-    filter: grayscale(1) contrast(1.7);
-    clip-path: polygon(0 8%, 45% 0, 53% 42%, 100% 23%, 95% 100%, 5% 92%);
-    transform: translate(10px, 18px) rotate(2.3deg) scale(0.97);
-  }
-  18%,
-  90% {
-    opacity: 0;
-    filter: grayscale(1);
-    clip-path: polygon(4% 15%, 45% 0, 55% 45%, 94% 20%, 100% 92%, 0 100%);
-    transform: translateY(28px) rotate(-2deg) scale(0.94);
-  }
-  94% {
-    opacity: 0.32;
-    filter: grayscale(0.7);
-    clip-path: polygon(0 8%, 45% 0, 52% 41%, 100% 25%, 97% 100%, 2% 94%);
-    transform: translateY(10px) rotate(0.8deg) scale(0.98);
-  }
-  98% {
-    opacity: 0.88;
-    filter: none;
-    clip-path: inset(0);
-    transform: translateY(-2px) scale(1.01);
-  }
-  100% {
-    opacity: 1;
-    filter: none;
-    clip-path: inset(0);
-    transform: none;
+@media (max-width: 640px) {
+  .breaker-rider {
+    width: 90px;
+    height: 120px;
   }
 }
 
@@ -1736,23 +1407,6 @@ body.site-breaker-screen-shake footer {
   }
 }
 
-@media (max-width: 640px) {
-  .site-breaker-shell {
-    width: 107px;
-    height: 142px;
-  }
-
-  .site-breaker-sound-toggle {
-    right: 10px;
-    bottom: 10px;
-  }
-
-  .site-breaker-impact {
-    width: 82px;
-    height: 82px;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1765,10 +1419,9 @@ body.site-breaker-screen-shake footer {
     transition-duration: 0.01ms !important;
   }
 
-  .site-breaker-shell,
-  .site-breaker-impact,
-  .site-breaker-debris,
-  .site-breaker-sound-toggle {
+  .breaker-rider,
+  .breaker-effects,
+  .breaker-toggle {
     display: none !important;
   }
 }

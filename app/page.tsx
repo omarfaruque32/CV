@@ -219,11 +219,12 @@ export default function Home() {
           <h1 id="hero-title">
             Omar
             <br />
-            <em>Faruque.</em>
+            <em data-breaker="text">Faruque.</em>
           </h1>
         </div>
         <div className="hero-portrait">
           <Image
+            data-breaker="image"
             src="/omar-faruque.jpg"
             alt="Omar Faruque, Technical Project Manager"
             fill
@@ -231,15 +232,15 @@ export default function Home() {
             sizes="(max-width: 800px) calc(100vw - 79px), (max-width: 1100px) 300px, 340px"
           />
         </div>
-        <div className="hero-intro">
-          <p className="hero-kicker">Projects · Products · People · Growth</p>
+        <div data-breaker="left" className="hero-intro">
+          <p data-breaker="text" className="hero-kicker">Projects · Products · People · Growth</p>
           <p>
             I turn complex ideas into clear, executable projects — connecting
             strategy, people, and delivery across technology, operations, and
             growth.
           </p>
           <div className="hero-actions">
-            <a className="primary-action" href="#work">
+            <a data-breaker="bottom" className="primary-action" href="#work">
               See how I work <span aria-hidden="true">↓</span>
             </a>
             <a className="text-action" href="mailto:omarfaruque32@gmail.com">
@@ -251,15 +252,15 @@ export default function Home() {
 
       <section className="proof-strip" aria-label="Career highlights">
         <div>
-          <strong>136</strong>
+          <strong data-breaker="text">136</strong>
           <span>feature roadmap managed end to end</span>
         </div>
         <div>
-          <strong>05</strong>
+          <strong data-breaker="text">05</strong>
           <span>AI products coordinated in one platform</span>
         </div>
         <div>
-          <strong>03</strong>
+          <strong data-breaker="text">03</strong>
           <span>European markets supported</span>
         </div>
         <div className="proof-note">
@@ -268,7 +269,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section-grid profile-section" id="profile">
+      <section data-breaker="bottom" className="section-grid profile-section" id="profile">
         <div className="section-marker">
           <span>01 / 06</span>
           <p>Profile</p>
@@ -294,14 +295,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section-grid experience-section" id="experience">
+      <section data-breaker="bottom" className="section-grid experience-section" id="experience">
         <div className="section-marker">
           <span>02 / 06</span>
           <p>Experience</p>
         </div>
         <div className="section-content">
           <div className="section-heading-row">
-            <h2>Experience with a clear through-line</h2>
+            <h2 data-breaker="text">Experience with a clear through-line</h2>
             <a
               href="/Omar_Faruque_CV.pdf"
               target="_blank"
@@ -314,13 +315,13 @@ export default function Home() {
 
           <div className="experience-list">
             {experiences.map((experience, index) => (
-              <article className="experience-item" key={experience.company}>
+              <article data-breaker="top" className="experience-item" key={experience.company}>
                 <div className="experience-meta">
                   <span>{String(index + 1).padStart(2, "0")}</span>
                   <time>{experience.period}</time>
                 </div>
                 <div className="experience-role">
-                  <h3>{experience.role}</h3>
+                  <h3 data-breaker="text">{experience.role}</h3>
                   <p>{experience.company}</p>
                   <span>{experience.location}</span>
                 </div>
@@ -355,7 +356,7 @@ export default function Home() {
       <section className="impact-band" aria-labelledby="impact-title">
         <div>
           <p className="eyebrow">The thread through my work</p>
-          <h2 id="impact-title">Clarity, coordination, momentum.</h2>
+          <h2 data-breaker="text" id="impact-title">Clarity, coordination, momentum.</h2>
         </div>
         <p>
           Across AI delivery, marketing, recruitment, and teaching, the work has
@@ -370,14 +371,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section-grid work-section" id="work">
+      <section data-breaker="bottom" className="section-grid work-section" id="work">
         <div className="section-marker">
           <span>03 / 06</span>
           <p>Selected work</p>
         </div>
         <div className="section-content">
           <div className="section-heading-row work-heading">
-            <h2>Problems I help teams move through</h2>
+            <h2 data-breaker="text">Problems I help teams move through</h2>
             <p>Three snapshots of how I connect strategy to execution.</p>
           </div>
           <div className="work-list">
@@ -387,7 +388,7 @@ export default function Home() {
                   <span>{project.number}</span>
                   <p>{project.label}</p>
                 </div>
-                <h3>{project.title}</h3>
+                <h3 data-breaker="text">{project.title}</h3>
                 <strong>{project.proof}</strong>
                 <dl>
                   <div>
@@ -409,18 +410,18 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section-grid capabilities-section" id="capabilities">
+      <section data-breaker="bottom" className="section-grid capabilities-section" id="capabilities">
         <div className="section-marker">
           <span>04 / 06</span>
           <p>Capabilities</p>
         </div>
         <div className="section-content">
-          <h2>A cross-functional toolkit, organised around delivery</h2>
+          <h2 data-breaker="text">A cross-functional toolkit, organised around delivery</h2>
           <div className="capability-grid">
             {capabilities.map((capability, index) => (
-              <article className="capability" key={capability.label}>
+              <article data-breaker="right" className="capability" key={capability.label}>
                 <span>{String(index + 1).padStart(2, "0")}</span>
-                <h3>{capability.label}</h3>
+                <h3 data-breaker="text">{capability.label}</h3>
                 <ul>
                   {capability.items.map((item) => (
                     <li key={item}>{item}</li>
@@ -440,7 +441,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section-grid credentials-section" id="credentials">
+      <section data-breaker="bottom" className="section-grid credentials-section" id="credentials">
         <div className="section-marker">
           <span>05 / 06</span>
           <p>Credentials</p>
@@ -448,7 +449,7 @@ export default function Home() {
         <div className="section-content credentials-layout">
           <div className="education-block">
             <p className="eyebrow">Education</p>
-            <h2>Bachelor of Engineering</h2>
+            <h2 data-breaker="text">Bachelor of Engineering</h2>
             <p>Computer Science & Engineering</p>
             <div>
               <strong>Jiangxi Normal University</strong>
@@ -484,7 +485,7 @@ export default function Home() {
       <section className="contact-section" id="contact">
         <div className="contact-index">06 / 06</div>
         <p className="eyebrow">Let’s create forward motion</p>
-        <h2>
+        <h2 data-breaker="text">
           Have an idea, team, or roadmap?
           <br />
           <em>Let’s move it forward.</em>
