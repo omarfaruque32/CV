@@ -1,7 +1,7 @@
 "use client";
 
 import type { CSSProperties } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type Phase = "resting" | "running" | "smashing";
 
@@ -72,6 +72,69 @@ const clamp = (value: number, minimum: number, maximum: number) =>
 const randomBetween = (minimum: number, maximum: number) =>
   Math.random() * (maximum - minimum) + minimum;
 
+const playBreakSound = (context: AudioContext) => {
+  if (context.state !== "running") return;
+
+  const now = context.currentTime;
+  const noiseDuration = 0.34;
+  const noiseBuffer = context.createBuffer(
+    1,
+    Math.ceil(context.sampleRate * noiseDuration),
+    context.sampleRate,
+  );
+  const noiseData = noiseBuffer.getChannelData(0);
+
+  for (let index = 0; index < noiseData.length; index += 1) {
+    const progress = index / noiseData.length;
+    noiseData[index] =
+      (Math.random() * 2 - 1) * Math.pow(1 - progress, 2.4);
+  }
+
+  const crack = context.createBufferSource();
+  const crackFilter = context.createBiquadFilter();
+  const crackGain = context.createGain();
+  crack.buffer = noiseBuffer;
+  crackFilter.type = "bandpass";
+  crackFilter.frequency.setValueAtTime(1650, now);
+  crackFilter.Q.setValueAtTime(0.75, now);
+  crackGain.gain.setValueAtTime(0.0001, now);
+  crackGain.gain.exponentialRampToValueAtTime(0.22, now + 0.008);
+  crackGain.gain.exponentialRampToValueAtTime(0.0001, now + noiseDuration);
+  crack.connect(crackFilter).connect(crackGain).connect(context.destination);
+  crack.start(now);
+  crack.stop(now + noiseDuration);
+
+  const thud = context.createOscillator();
+  const thudGain = context.createGain();
+  thud.type = "triangle";
+  thud.frequency.setValueAtTime(105, now);
+  thud.frequency.exponentialRampToValueAtTime(42, now + 0.2);
+  thudGain.gain.setValueAtTime(0.18, now);
+  thudGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.24);
+  thud.connect(thudGain).connect(context.destination);
+  thud.start(now);
+  thud.stop(now + 0.25);
+
+  [0.045, 0.095, 0.15].forEach((delay, index) => {
+    const chip = context.createOscillator();
+    const chipGain = context.createGain();
+    chip.type = "square";
+    chip.frequency.setValueAtTime(620 + index * 260, now + delay);
+    chip.frequency.exponentialRampToValueAtTime(
+      220 + index * 90,
+      now + delay + 0.075,
+    );
+    chipGain.gain.setValueAtTime(0.035, now + delay);
+    chipGain.gain.exponentialRampToValueAtTime(
+      0.0001,
+      now + delay + 0.08,
+    );
+    chip.connect(chipGain).connect(context.destination);
+    chip.start(now + delay);
+    chip.stop(now + delay + 0.085);
+  });
+};
+
 const makeDebris = (x: number, y: number, seed: number): Debris[] => {
   const colors = ["#171a21", "#2854e8", "#f4f1e8", "#8e6d45"];
 
@@ -103,12 +166,50 @@ export default function SiteBreaker() {
   const [facing, setFacing] = useState(1);
   const [impact, setImpact] = useState<Impact | null>(null);
   const [debris, setDebris] = useState<Debris[]>([]);
+  const [soundReady, setSoundReady] = useState(false);
   const positionRef = useRef(position);
   const lastTargetRef = useRef<Element | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+
+  const unlockAudio = useCallback(() => {
+    const AudioContextConstructor =
+      window.AudioContext ??
+      (window as typeof window & {
+        webkitAudioContext?: typeof AudioContext;
+      }).webkitAudioContext;
+
+    if (!AudioContextConstructor) return;
+
+    const context = audioContextRef.current ?? new AudioContextConstructor();
+    audioContextRef.current = context;
+
+    const markReady = () => setSoundReady(context.state === "running");
+
+    if (context.state === "suspended") {
+      void context.resume().then(markReady);
+    } else {
+      markReady();
+    }
+  }, []);
 
   useEffect(() => {
     positionRef.current = position;
   }, [position]);
+
+  useEffect(() => {
+    window.addEventListener("pointerdown", unlockAudio, { passive: true });
+    window.addEventListener("keydown", unlockAudio);
+
+    return () => {
+      window.removeEventListener("pointerdown", unlockAudio);
+      window.removeEventListener("keydown", unlockAudio);
+      const context = audioContextRef.current;
+      audioContextRef.current = null;
+      if (context && context.state !== "closed") {
+        void context.close();
+      }
+    };
+  }, [unlockAudio]);
 
   useEffect(() => {
     const reduceMotion = window.matchMedia(
@@ -219,21 +320,27 @@ export default function SiteBreaker() {
         const impactId = Date.now();
 
         setPhase("smashing");
-        target.classList.remove("site-breaker-broken");
-        // Restart the damage animation if a target is selected twice later.
-        void target.getBoundingClientRect();
-        target.classList.add("site-breaker-broken");
-        setImpact({ id: impactId, x: liveImpactX, y: liveImpactY });
-        setDebris(makeDebris(liveImpactX, liveImpactY, impactId));
 
+        // Match the sound, debris, and damage to the hammer's contact frame.
         schedule(() => {
-          setImpact(null);
-          setDebris([]);
-        }, 1050);
-
-        schedule(() => {
+          const audioContext = audioContextRef.current;
+          if (audioContext) playBreakSound(audioContext);
           target.classList.remove("site-breaker-broken");
-        }, 2600);
+          // Restart the damage animation if a target is selected twice later.
+          void target.getBoundingClientRect();
+          target.classList.add("site-breaker-broken");
+          setImpact({ id: impactId, x: liveImpactX, y: liveImpactY });
+          setDebris(makeDebris(liveImpactX, liveImpactY, impactId));
+
+          schedule(() => {
+            setImpact(null);
+            setDebris([]);
+          }, 1050);
+
+          schedule(() => {
+            target.classList.remove("site-breaker-broken");
+          }, 2600);
+        }, 320);
 
         schedule(() => {
           setPhase("resting");
@@ -304,6 +411,16 @@ export default function SiteBreaker() {
           );
         })}
       </div>
+
+      {enabled && !soundReady ? (
+        <button
+          className="site-breaker-sound-toggle"
+          type="button"
+          onClick={unlockAudio}
+        >
+          Enable sound
+        </button>
+      ) : null}
 
       <button
         className="site-breaker-toggle"
